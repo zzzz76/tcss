@@ -16,9 +16,9 @@ import java.util.concurrent.*;
 @Component
 public class ReadyTaskExecutor {
     // 就绪队列
-    private LinkedBlockingQueue<ReadyTask> readyQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<ReadyTask> readyQueue = new LinkedBlockingQueue<>();
     // 阻塞队列
-    private LinkedBlockingQueue<ReadyTask> blockQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<ReadyTask> blockQueue = new LinkedBlockingQueue<>();
 
     @PostConstruct
     public void init() {
@@ -49,7 +49,7 @@ public class ReadyTaskExecutor {
         executingThread.start();
     }
 
-    public void execute(ReadyTask readyTask) {
+    public void submit(ReadyTask readyTask) {
         readyQueue.offer(readyTask);
     }
 

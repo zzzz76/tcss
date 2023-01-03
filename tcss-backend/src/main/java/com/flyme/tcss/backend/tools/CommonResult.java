@@ -7,19 +7,20 @@ import lombok.Data;
  * @date 2022/12/26
  */
 @Data
-public class CommonResult<T> {
+public class CommonResult {
+    private boolean success;
+    private String message;
 
-    private final Integer status;
-
-    private final T data;
-
-    private final String msg;
-
-    public static <T> CommonResult<T> successResponse(T data, String msg) {
-        return new CommonResult<>(200, data, msg);
+    public CommonResult(boolean success, String message) {
+        this.success = success;
+        this.message = message;
     }
 
-    public static <T> CommonResult<T> successResponse(T data) {
-        return new CommonResult<>(200, data, "success");
+    public static CommonResult successResponse(String message) {
+        return new CommonResult(true, message);
+    }
+
+    public static CommonResult failResponse(String message) {
+        return new CommonResult(false, message);
     }
 }

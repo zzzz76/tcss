@@ -10,7 +10,7 @@ import com.flyme.tcss.backend.tools.SpringBean;
  */
 public abstract class RunTask implements Runnable {
 
-    public void execute() {
+    public void submit() {
         SpringBean.getBean(RunTaskExecutor.class).execute(this);
     }
 

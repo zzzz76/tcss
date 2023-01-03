@@ -1,16 +1,16 @@
 package com.flyme.tcss.backend.factory;
 
-import com.flyme.tcss.backend.dao.TestCaseRepo;
+import com.flyme.tcss.backend.dao.TestRecordRepo;
 import com.flyme.tcss.backend.domain.TestCase;
-import com.flyme.tcss.backend.enums.CaseStatusEnum;
+import com.flyme.tcss.backend.domain.TestInstance;
+import com.flyme.tcss.backend.domain.TestRecord;
+import com.flyme.tcss.backend.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.task.RunTask;
 import com.flyme.tcss.backend.tools.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Date;
 
 /**
  * @author xiaodao
@@ -20,7 +20,7 @@ import java.util.Date;
 @Component
 public class RunTaskFactory {
     @Autowired
-    private TestCaseRepo testCaseRepo;
+    private TestRecordRepo testRecordRepo;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -29,43 +29,40 @@ public class RunTaskFactory {
     private InstanceFactory instanceFactory;
 
 
-    public RunTask buildRunTask(TestCase testCase) {
-        return new TestCaseRunTask(testCase);
+    public RunTask buildRunTask(TestCase testCase, TestRecord testRecord) {
+        return new TestCaseRunTask(testCase, testRecord);
     }
 
     class TestCaseRunTask extends RunTask {
+        private final TestCase testCase;
+        private final TestRecord testRecord;
 
-        private TestCase testCase;
-
-        public TestCaseRunTask(TestCase testCase) {
+        public TestCaseRunTask(TestCase testCase, TestRecord testRecord) {
             this.testCase = testCase;
+            this.testRecord = testRecord;
         }
 
         @Override
         public void run() {
-            String instanceName = instanceFactory.getInstance();
-            if (instanceName != null && !instanceName.isEmpty()) {
+            TestInstance instance = instanceFactory.getInstance();
+            if (instance != null) {
                 try {
-                    CommonResult<?> result = restTemplate.postForObject("http://" + instanceName + "/submit", testCase, CommonResult.class);
-                    if (result != null) {
-                        TestCase resultCase = (TestCase) result.getData();
-                        handle(resultCase);
-                    } else {
-                        log.error("post result is null");
+                    CommonResult result = restTemplate.postForObject("http://" + instance.getUrl() + "/submit", testCase, CommonResult.class);
+                    if (result == null || !result.isSuccess()) {
+                        log.error("请求测试服务实例失败，instanceName:{}, testCase:{}", instance, testCase);
                         onError();
                     }
 
                 } catch (Throwable t) {
                     log.error(t.getMessage(), t);
                     onError();
-                } finally {
-                    instanceFactory.releaseInstance(instanceName);
                 }
+            }
 
-            } else {
+            if (instance == null) {
                 try {
                     Thread.sleep(3000);
-                    execute();
+                    submit();
                 } catch (Throwable t) {
                     log.error(t.getMessage(), t);
                     onError();
@@ -73,16 +70,9 @@ public class RunTaskFactory {
             }
         }
 
-        private void handle(TestCase resultCase) {
-            testCase.setCaseStatus(resultCase.getCaseType());
-            testCase.setGmtModified(new Date());
-            testCaseRepo.updateById(testCase);
-        }
-
         private void onError() {
-            testCase.setCaseStatus(CaseStatusEnum.EXCEPTION.getCode());
-            testCase.setGmtModified(new Date());
-            testCaseRepo.updateById(testCase);
+            testRecord.setStatus(RecordStatusEnum.EXCEPTION.getCode());
+            testRecordRepo.updateById(testRecord);
         }
 
     }

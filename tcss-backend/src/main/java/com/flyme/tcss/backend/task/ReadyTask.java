@@ -10,8 +10,8 @@ import com.flyme.tcss.backend.tools.SpringBean;
  */
 public abstract class ReadyTask {
     // 提交任务至就绪队列
-    public void execute() {
-        SpringBean.getBean(ReadyTaskExecutor.class).execute(this);
+    public void submit() {
+        SpringBean.getBean(ReadyTaskExecutor.class).submit(this);
     }
 
     // 执行任务

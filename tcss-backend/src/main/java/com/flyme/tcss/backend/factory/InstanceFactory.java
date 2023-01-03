@@ -4,14 +4,17 @@ import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.flyme.tcss.backend.dao.TestInstanceRepo;
+import com.flyme.tcss.backend.domain.TestInstance;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 记录服务实例的状态
@@ -19,55 +22,33 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author xiaodao
  * @date 2022/12/26
  */
+@Slf4j
 @Component
 public class InstanceFactory {
-
-    private final Map<String, Integer> records = new ConcurrentHashMap<>();
 
     @Value("${provider.name}")
     private String serviceName;
 
-    @Value("${provider.task-num}")
-    private Integer maxTaskNum;
+    @Autowired
+    private TestInstanceRepo testInstanceRepo;
 
     @Autowired
     private NacosDiscoveryProperties discoveryProperties;
 
-    // 释放锁定的服务实例
-    public void releaseInstance(String instanceName) {
-        if (records.get(instanceName) > 0) {
-            synchronized (records) {
-                int taskNum = records.get(instanceName);
-                if (taskNum > 0) {
-                    records.put(instanceName, taskNum - 1);
-                }
-            }
-        }
-    }
-
     // 获取空闲的服务实例
-    public String getInstance() {
+    public TestInstance getInstance() {
         List<Instance> instances = getInstances(serviceName);
-        Collections.shuffle(instances);
+        List<String> urlList = new ArrayList<>();
         for (Instance instance: instances) {
-            String instanceName = instance.getIp() + ":" + instance.getPort();
-            if (!records.containsKey(instanceName)) {
-                synchronized (records) {
-                    if (!records.containsKey(instanceName)) {
-                        records.put(instanceName, 1);
-                        return instanceName;
-                    }
-                }
-            }
+            urlList.add(instance.getIp() + ":" + instance.getPort());
+        }
 
-            if (records.get(instanceName) < maxTaskNum) {
-                synchronized (records) {
-                    int taskNum = records.get(instanceName);
-                    if (taskNum < maxTaskNum) {
-                        records.put(instanceName, taskNum + 1);
-                        return instanceName;
-                    }
-                }
+        QueryWrapper<TestInstance> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("url", urlList).orderByAsc("task_num");
+        List<TestInstance> testInstanceList = testInstanceRepo.list(queryWrapper);
+        for (TestInstance testInstance: testInstanceList) {
+            if (testInstance.getTaskNum() < testInstance.getMaxTaskNum()) {
+                return testInstance;
             }
         }
         return null;
@@ -79,6 +60,7 @@ public class InstanceFactory {
         try {
             return namingService.selectInstances(serviceName, true);
         } catch (NacosException e) {
+            log.error(e.getErrMsg(), e);
             return Collections.emptyList();
         }
     }

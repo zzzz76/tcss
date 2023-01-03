@@ -8,8 +8,13 @@ import com.flyme.tcss.backend.domain.TestCase;
  */
 public interface CaseService {
     /**
-     * 提交测试案例
+     * 提交测试用例
      */
     void submitTestCase(TestCase testCase);
+
+    /**
+     * 获取测试用例
+     */
+    TestCase getTestCase(Long id);
 
 }

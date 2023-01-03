@@ -4,23 +4,22 @@ package com.flyme.tcss.backend.enums;
  * @author xiaodao
  * @date 2022/12/22
  */
-public enum CaseStatusEnum {
-    WAITING("00", "待测试"),
-    TESTING("01", "测试中"),
-    SUCCEED("02", "测试成功"),
-    FAILED("03", "测试失败"),
-    EXCEPTION("04", "测试异常"),
-    ;
+public enum MutualTagEnum {
+    SOUTH("00", "南"),
+    NORTH("01", "北"),
+    WEST("02", "西"),
+    EAST("03", "东"),
+            ;
     private final String code;
     private final String desc;
 
-    CaseStatusEnum(String code, String desc) {
+    MutualTagEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
-    public static CaseStatusEnum getItem(String code) {
-        for (CaseStatusEnum item: values()) {
+    public static MutualTagEnum getItem(String code) {
+        for (MutualTagEnum item: values()) {
             if (item.code.equals(code)) {
                 return item;
             }

@@ -4,23 +4,23 @@ package com.flyme.tcss.backend.enums;
  * @author xiaodao
  * @date 2022/12/22
  */
-public enum CaseTypeEnum {
-    NORMAL("00", "普通类型"),
-    SOUTH("01", "南极"),
-    NORTH("02", "北极"),
-    WEST("03", "西极"),
-    EAST("04", "东极"),
-            ;
+public enum RecordStatusEnum {
+    PENDING("00", "待测试"),
+    RUNNING("01", "测试中"),
+    SUCCEED("02", "测试成功"),
+    FAILED("03", "测试失败"),
+    EXCEPTION("04", "测试异常"),
+    ;
     private final String code;
     private final String desc;
 
-    CaseTypeEnum(String code, String desc) {
+    RecordStatusEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
-    public static CaseTypeEnum getItem(String code) {
-        for (CaseTypeEnum item: values()) {
+    public static RecordStatusEnum getItem(String code) {
+        for (RecordStatusEnum item: values()) {
             if (item.code.equals(code)) {
                 return item;
             }
