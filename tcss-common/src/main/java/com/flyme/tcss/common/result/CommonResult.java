@@ -1,4 +1,4 @@
-package com.flyme.tcss.backend.tools;
+package com.flyme.tcss.common.result;
 
 import lombok.Data;
 

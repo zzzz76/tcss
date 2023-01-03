@@ -1,7 +1,7 @@
 package com.flyme.tcss.backend.service;
 
 import com.flyme.tcss.backend.BackendApplicationTest;
-import com.flyme.tcss.backend.domain.TestCase;
+import com.flyme.tcss.common.domain.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

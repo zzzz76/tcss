@@ -1,7 +1,7 @@
 package com.flyme.tcss.backend.dao;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flyme.tcss.backend.domain.TestCase;
+import com.flyme.tcss.common.domain.TestCase;
 
 /**
  * @author xiaodao

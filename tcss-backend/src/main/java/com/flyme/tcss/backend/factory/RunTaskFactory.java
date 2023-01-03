@@ -1,12 +1,12 @@
 package com.flyme.tcss.backend.factory;
 
 import com.flyme.tcss.backend.dao.TestRecordRepo;
-import com.flyme.tcss.backend.domain.TestCase;
-import com.flyme.tcss.backend.domain.TestInstance;
-import com.flyme.tcss.backend.domain.TestRecord;
-import com.flyme.tcss.backend.enums.RecordStatusEnum;
+import com.flyme.tcss.common.domain.TestCase;
+import com.flyme.tcss.common.domain.TestInstance;
+import com.flyme.tcss.common.domain.TestRecord;
+import com.flyme.tcss.common.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.task.RunTask;
-import com.flyme.tcss.backend.tools.CommonResult;
+import com.flyme.tcss.common.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

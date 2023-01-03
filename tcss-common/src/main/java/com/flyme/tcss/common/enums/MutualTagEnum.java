@@ -1,4 +1,4 @@
-package com.flyme.tcss.backend.enums;
+package com.flyme.tcss.common.enums;
 
 /**
  * @author xiaodao

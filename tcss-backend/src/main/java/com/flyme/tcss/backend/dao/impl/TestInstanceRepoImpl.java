@@ -2,7 +2,7 @@ package com.flyme.tcss.backend.dao.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flyme.tcss.backend.dao.TestInstanceRepo;
-import com.flyme.tcss.backend.domain.TestInstance;
+import com.flyme.tcss.common.domain.TestInstance;
 import com.flyme.tcss.backend.mapper.TestInstanceMapper;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.flyme.tcss.backend.service;
 
-import com.flyme.tcss.backend.domain.TestCase;
+import com.flyme.tcss.common.domain.TestCase;
 
 /**
  * @author xiaodao

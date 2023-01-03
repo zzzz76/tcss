@@ -2,9 +2,9 @@ package com.flyme.tcss.backend.service.impl;
 
 import com.flyme.tcss.backend.dao.TestCaseRepo;
 import com.flyme.tcss.backend.dao.TestRecordRepo;
-import com.flyme.tcss.backend.domain.TestCase;
-import com.flyme.tcss.backend.domain.TestRecord;
-import com.flyme.tcss.backend.enums.RecordStatusEnum;
+import com.flyme.tcss.common.domain.TestCase;
+import com.flyme.tcss.common.domain.TestRecord;
+import com.flyme.tcss.common.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.factory.ReadyTaskFactory;
 import com.flyme.tcss.backend.service.CaseService;
 import com.flyme.tcss.backend.task.ReadyTask;

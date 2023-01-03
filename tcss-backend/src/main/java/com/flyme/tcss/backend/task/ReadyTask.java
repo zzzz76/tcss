@@ -1,7 +1,5 @@
 package com.flyme.tcss.backend.task;
 
-import com.flyme.tcss.backend.tools.SpringBean;
-
 /**
  * 就绪队列中的任务
  *

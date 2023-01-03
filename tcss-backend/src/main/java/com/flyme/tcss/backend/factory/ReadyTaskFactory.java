@@ -1,19 +1,17 @@
 package com.flyme.tcss.backend.factory;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.flyme.tcss.backend.dao.TestCaseRepo;
 import com.flyme.tcss.backend.dao.TestRecordRepo;
-import com.flyme.tcss.backend.domain.TestCase;
-import com.flyme.tcss.backend.domain.TestRecord;
-import com.flyme.tcss.backend.enums.MutualTagEnum;
-import com.flyme.tcss.backend.enums.RecordStatusEnum;
+import com.flyme.tcss.common.domain.TestCase;
+import com.flyme.tcss.common.domain.TestRecord;
+import com.flyme.tcss.common.enums.MutualTagEnum;
+import com.flyme.tcss.common.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.task.ReadyTask;
 import com.flyme.tcss.backend.task.RunTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

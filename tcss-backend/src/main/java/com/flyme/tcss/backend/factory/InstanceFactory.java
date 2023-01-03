@@ -6,7 +6,7 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.flyme.tcss.backend.dao.TestInstanceRepo;
-import com.flyme.tcss.backend.domain.TestInstance;
+import com.flyme.tcss.common.domain.TestInstance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

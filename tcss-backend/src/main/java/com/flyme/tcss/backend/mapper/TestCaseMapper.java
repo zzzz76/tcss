@@ -1,7 +1,7 @@
 package com.flyme.tcss.backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.flyme.tcss.backend.domain.TestCase;
+import com.flyme.tcss.common.domain.TestCase;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

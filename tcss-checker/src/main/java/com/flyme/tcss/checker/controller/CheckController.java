@@ -1,6 +1,5 @@
 package com.flyme.tcss.checker.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/check")
 public class CheckController {
 
-    // 服务调用凭证
-    @Value("${tcss.check.token}")
-    private String checkToken;
-
     @GetMapping("/submit")
     public String submitCase() {
-        System.out.println("submit case:" + checkToken);
+        System.out.println("submit case:");
         return "{'submit': 'case'}";
     }
 }

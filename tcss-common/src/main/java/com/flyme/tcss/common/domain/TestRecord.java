@@ -1,4 +1,4 @@
-package com.flyme.tcss.backend.domain;
+package com.flyme.tcss.common.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,28 +11,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 测试用例实体类，规定了测试接口的输入输出，用于检测测试接口是否能正常工作
+ * 测试记录实体类，记录测试用例每一次的执行情况
  *
  * @author xiaodao
  * @date 2022/12/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TestCase implements Serializable {
+public class TestRecord implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private String url;
+    private Long caseId;
 
-    private String input;
+    private String result;
 
-    private String output;
-
-    private Long casePre;
-
-    private String mutualTag;
+    private String status;
 
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
