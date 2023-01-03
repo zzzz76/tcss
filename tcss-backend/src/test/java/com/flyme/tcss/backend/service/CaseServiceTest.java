@@ -21,4 +21,11 @@ public class CaseServiceTest extends BackendApplicationTest {
         TestCase testCase = caseService.getTestCase(1L);
         log.info("获取测试用例，testCase:{}", testCase);
     }
+
+    @Test
+    public void testSubmitTestCase() {
+        TestCase testCase = caseService.getTestCase(1L);
+        log.info("获取测试用例，testCase:{}", testCase);
+        caseService.submitTestCase(testCase);
+    }
 }

@@ -35,7 +35,8 @@ public class CaseServiceImpl implements CaseService {
         testRecord.setCaseId(testCase.getId());
         testRecord.setStatus(RecordStatusEnum.PENDING.getCode());
         testRecordRepo.save(testRecord);
-        // 创建就绪任务，并提交至就绪队列
+
+        log.info("创建就绪任务，并提交至就绪队列，testCase:{}，testRecord:{}", testCase, testRecord);
         ReadyTask readyTask = readyTaskFactory.buildReadyTask(testCase, testRecord);
         readyTask.submit();
     }

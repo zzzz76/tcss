@@ -8,6 +8,7 @@ import com.flyme.tcss.common.enums.MutualTagEnum;
 import com.flyme.tcss.common.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.task.ReadyTask;
 import com.flyme.tcss.backend.task.RunTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @author xiaodao
  * @date 2022/12/27
  */
+@Slf4j
 @Component
 public class ReadyTaskFactory {
     @Autowired
@@ -43,9 +45,10 @@ public class ReadyTaskFactory {
         protected void run() {
             testRecord.setStatus(RecordStatusEnum.RUNNING.getCode());
             testRecordRepo.updateById(testRecord);
-            // 创建线程任务，并提交至线程池
-            RunTask runTask = runTaskFactory.buildRunTask(testCase, testRecord);
-            runTask.submit();
+
+            log.info("创建运行任务，并提交至线程池，testCase:{}，testRecord:{}", testCase, testRecord);
+//            RunTask runTask = runTaskFactory.buildRunTask(testCase, testRecord);
+//            runTask.submit();
         }
 
         @Override

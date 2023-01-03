@@ -47,6 +47,7 @@ public class ReadyTaskExecutor {
         });
         executingThread.setDaemon(true);
         executingThread.start();
+        log.info("任务执行器初始化，创建守护线程：{}", executingThread.getName());
     }
 
     public void submit(ReadyTask readyTask) {
