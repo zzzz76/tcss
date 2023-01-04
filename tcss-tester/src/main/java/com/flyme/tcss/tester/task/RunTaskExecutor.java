@@ -1,9 +1,11 @@
-package com.flyme.tcss.backend.task;
+package com.flyme.tcss.tester.task;
 
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 运行任务执行器
@@ -25,7 +27,7 @@ public class RunTaskExecutor {
     }
 
     @PostConstruct
-    private void init() {
+    public void init() {
         executor = new ThreadPoolExecutor(
                 maximumConcurrency,
                 Integer.MAX_VALUE,

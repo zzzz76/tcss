@@ -32,7 +32,7 @@ public class TestInstance implements Serializable {
 
     private Integer maxTaskNum;
 
-    private String status;
+    private Long version;
 
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;

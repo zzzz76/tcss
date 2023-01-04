@@ -11,7 +11,7 @@
     <modules>
         <module>tcss-backend</module>
         <module>tcss-common</module>
-        <module>tcss-checker</module>
+        <module>tcss-tester</module>
     </modules>
 
     <properties>

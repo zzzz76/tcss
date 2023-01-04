@@ -23,21 +23,12 @@ spring:
       - nacos:tcss-${spring.profiles.active}.yaml
   profiles:
     active: @profiles.active@
-
   datasource:
     username: ${tcss.db.username}
     password: ${tcss.db.password}
     url: jdbc:mysql://${tcss.db.host}:${tcss.db.port}/${tcss.db.name}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
-mybatis-plus:
-  mapper-locations: classpath*:com/flyme/tcss/backend/mapper/xml/**Mapper.xml
-  type-aliases-package: com.flyme.tcss.common.pojo.entity
-  configuration:
-    cache-enabled: false
-  global-config:
-    banner: false
 
 logging:
   level:

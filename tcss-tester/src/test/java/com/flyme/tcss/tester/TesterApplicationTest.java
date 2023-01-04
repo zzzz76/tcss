@@ -1,8 +1,6 @@
-package com.flyme.tcss.checker;
+package com.flyme.tcss.tester;
 
-import com.flyme.tcss.checker.controller.CheckController;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -10,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @date 2022/12/21
  */
 @SpringBootTest
-public class CheckerApplicationTest {
+public class TesterApplicationTest {
 
     @Test
     void contextLoads() {

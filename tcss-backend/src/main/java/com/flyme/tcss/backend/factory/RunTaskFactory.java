@@ -4,6 +4,7 @@ import com.flyme.tcss.backend.dao.TestRecordRepo;
 import com.flyme.tcss.common.domain.TestCase;
 import com.flyme.tcss.common.domain.TestInstance;
 import com.flyme.tcss.common.domain.TestRecord;
+import com.flyme.tcss.common.dto.SubmissionDTO;
 import com.flyme.tcss.common.enums.RecordStatusEnum;
 import com.flyme.tcss.backend.task.RunTask;
 import com.flyme.tcss.common.result.CommonResult;
@@ -28,7 +29,6 @@ public class RunTaskFactory {
     @Autowired
     private InstanceFactory instanceFactory;
 
-
     public RunTask buildRunTask(TestCase testCase, TestRecord testRecord) {
         return new TestCaseRunTask(testCase, testRecord);
     }
@@ -47,9 +47,10 @@ public class RunTaskFactory {
             TestInstance instance = instanceFactory.getInstance();
             if (instance != null) {
                 try {
-                    CommonResult result = restTemplate.postForObject("http://" + instance.getUrl() + "/submit", testCase, CommonResult.class);
+                    SubmissionDTO submission = buildSubmission(testCase, testRecord);
+                    CommonResult result = restTemplate.postForObject("http://" + instance.getUrl() + "/submit", submission, CommonResult.class);
                     if (result == null || !result.isSuccess()) {
-                        log.error("请求测试服务实例失败，instanceName:{}, testCase:{}", instance, testCase);
+                        log.error("请求测试服务实例失败，instanceName:{}, submission:{}", instance, submission);
                         onError();
                     }
 
@@ -75,5 +76,14 @@ public class RunTaskFactory {
             testRecordRepo.updateById(testRecord);
         }
 
+    }
+
+    private SubmissionDTO buildSubmission(TestCase testCase, TestRecord testRecord) {
+        SubmissionDTO submission = new SubmissionDTO();
+        submission.setUrl(testCase.getUrl());
+        submission.setInput(testCase.getInput());
+        submission.setOutput(testCase.getOutput());
+        submission.setRecordId(testRecord.getId());
+        return submission;
     }
 }
