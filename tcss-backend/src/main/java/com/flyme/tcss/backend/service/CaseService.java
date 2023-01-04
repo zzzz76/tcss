@@ -2,6 +2,8 @@ package com.flyme.tcss.backend.service;
 
 import com.flyme.tcss.common.domain.TestCase;
 
+import java.util.List;
+
 /**
  * @author xiaodao
  * @date 2022/12/22
@@ -17,4 +19,8 @@ public interface CaseService {
      */
     TestCase getTestCase(Long id);
 
+    /**
+     * 获取所有测试用例
+     */
+    List<TestCase> listTestCase();
 }

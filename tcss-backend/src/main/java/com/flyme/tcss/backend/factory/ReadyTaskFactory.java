@@ -47,8 +47,8 @@ public class ReadyTaskFactory {
             testRecordRepo.updateById(testRecord);
 
             log.info("创建运行任务，并提交至线程池，testCase:{}，testRecord:{}", testCase, testRecord);
-//            RunTask runTask = runTaskFactory.buildRunTask(testCase, testRecord);
-//            runTask.submit();
+            RunTask runTask = runTaskFactory.buildRunTask(testCase, testRecord);
+            runTask.submit();
         }
 
         @Override

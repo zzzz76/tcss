@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author xiaodao
  * @date 2022/12/22
@@ -45,4 +47,10 @@ public class CaseServiceImpl implements CaseService {
     public TestCase getTestCase(Long id) {
         return testCaseRepo.getById(id);
     }
+
+    @Override
+    public List<TestCase> listTestCase() {
+        return testCaseRepo.list();
+    }
+
 }

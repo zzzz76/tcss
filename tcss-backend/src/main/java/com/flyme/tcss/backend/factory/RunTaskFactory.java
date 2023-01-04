@@ -52,6 +52,8 @@ public class RunTaskFactory {
                     if (result == null || !result.isSuccess()) {
                         log.error("请求测试服务实例失败，instanceName:{}, submission:{}", instance, submission);
                         onError();
+                    } else {
+                        log.info("请求测试服务实例成功，instanceName:{}, submission:{}", instance, submission);
                     }
 
                 } catch (Throwable t) {

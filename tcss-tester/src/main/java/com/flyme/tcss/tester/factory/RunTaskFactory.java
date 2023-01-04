@@ -1,6 +1,5 @@
 package com.flyme.tcss.tester.factory;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.flyme.tcss.common.domain.TestInstance;
 import com.flyme.tcss.common.domain.TestRecord;
@@ -11,8 +10,9 @@ import com.flyme.tcss.tester.dao.TestRecordRepo;
 import com.flyme.tcss.tester.task.RunTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author xiaodao
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class RunTaskFactory {
-    @Value("${server.url}")
-    private String url;
+    @Resource
+    private TestInstance initialInstance;
 
     @Autowired
     private TestRecordRepo testRecordRepo;
@@ -53,7 +53,7 @@ public class RunTaskFactory {
                 updateRecord.setResult(result);
                 updateRecord.setStatus(recordStatus.getCode());
                 testRecordRepo.updateById(updateRecord);
-                log.info("测试执行完毕，submission:{}, result:{}", submission, result);
+                log.info("测试任务执行完毕，submission:{}, result:{}", submission, result);
 
             } catch (Throwable t) {
                 updateRecord.setStatus(RecordStatusEnum.EXCEPTION.getCode());
@@ -77,11 +77,8 @@ public class RunTaskFactory {
 
     private void increaseCurrentTaskNum() {
         boolean isOK = false;
-        for (int i = 0; i < 8 && !isOK; i++) {
-            QueryWrapper<TestInstance> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("url", url);
-            TestInstance testInstance = testInstanceRepo.getOne(queryWrapper);
-
+        for (int i = 0; i < 10 && !isOK; i++) {
+            TestInstance testInstance = testInstanceRepo.getById(initialInstance.getId());
             UpdateWrapper<TestInstance> updateWrapper = new UpdateWrapper<>();
             updateWrapper.set("task_num", testInstance.getTaskNum() + 1)
                     .set("version", testInstance.getVersion() + 1)
@@ -89,16 +86,20 @@ public class RunTaskFactory {
                     .eq("version", testInstance.getVersion());
 
             isOK = testInstanceRepo.update(updateWrapper);
+            if (!isOK) {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     private void reduceCurrentTaskNum() {
         boolean isOK = false;
-        for (int i = 0; i < 8 && !isOK; i++) {
-            QueryWrapper<TestInstance> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("url", url);
-            TestInstance testInstance = testInstanceRepo.getOne(queryWrapper);
-
+        for (int i = 0; i < 10 && !isOK; i++) {
+            TestInstance testInstance = testInstanceRepo.getById(initialInstance.getId());
             UpdateWrapper<TestInstance> updateWrapper = new UpdateWrapper<>();
             updateWrapper.set("task_num", testInstance.getTaskNum() - 1)
                     .set("version", testInstance.getVersion() + 1)
@@ -106,6 +107,13 @@ public class RunTaskFactory {
                     .eq("version", testInstance.getVersion());
 
             isOK = testInstanceRepo.update(updateWrapper);
+            if (!isOK) {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

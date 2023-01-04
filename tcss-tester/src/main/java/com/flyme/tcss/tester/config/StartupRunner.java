@@ -2,11 +2,13 @@ package com.flyme.tcss.tester.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.flyme.tcss.common.domain.TestInstance;
+import com.flyme.tcss.common.utils.IpUtil;
 import com.flyme.tcss.tester.dao.TestInstanceRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,19 +17,21 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class StartupRunner implements CommandLineRunner {
+public class StartupRunner {
 
     @Value("${provider.task-num}")
     private Integer maxTaskNum;
     @Value("${provider.name}")
     private String serverName;
-    @Value("${server.url}")
-    private String url;
+    @Value("${server.port}")
+    private String port;
     @Autowired
     private TestInstanceRepo testInstanceRepo;
 
-    @Override
-    public void run(String... args) {
+    @Bean
+    @Primary
+    public TestInstance initialInstance() {
+        String url = IpUtil.getServiceIp() + ":" + port;
 
         QueryWrapper<TestInstance> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("url", url);
@@ -46,5 +50,6 @@ public class StartupRunner implements CommandLineRunner {
             testInstanceRepo.save(testInstance);
         }
         log.info("初始化测试服务实例，instance:{}", testInstance);
+        return testInstance;
     }
 }
