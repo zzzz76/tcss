@@ -1,6 +1,7 @@
 package com.flyme.tcss.backend.factory;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.flyme.tcss.backend.dao.TestCaseRepo;
 import com.flyme.tcss.backend.dao.TestRecordRepo;
 import com.flyme.tcss.common.domain.TestCase;
 import com.flyme.tcss.common.domain.TestRecord;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author xiaodao
@@ -22,6 +25,9 @@ import java.util.List;
 @Slf4j
 @Component
 public class ReadyTaskFactory {
+    @Autowired
+    private TestCaseRepo testCaseRepo;
+
     @Autowired
     private TestRecordRepo testRecordRepo;
 
@@ -85,10 +91,15 @@ public class ReadyTaskFactory {
                 return true;
             }
 
-            QueryWrapper<TestRecord> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("mutual_tag", mutualTag);
-            queryWrapper.eq("status", RecordStatusEnum.RUNNING.getCode());
-            return testRecordRepo.count(queryWrapper) == 0;
+            QueryWrapper<TestCase> caseWrapper = new QueryWrapper<>();
+            caseWrapper.eq("mutual_tag", mutualTag);
+            List<Long> ids = testCaseRepo.list(caseWrapper).stream()
+                    .map(TestCase::getId).collect(Collectors.toList());
+
+            QueryWrapper<TestRecord> recordWrapper = new QueryWrapper<>();
+            recordWrapper.in("case_id", ids);
+            recordWrapper.eq("status", RecordStatusEnum.RUNNING.getCode());
+            return testRecordRepo.count(recordWrapper) == 0;
         }
     }
 
